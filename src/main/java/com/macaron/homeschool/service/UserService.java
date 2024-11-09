@@ -5,6 +5,7 @@ import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.common.enums.UserType;
 import com.macaron.homeschool.model.dto.UserRegisterDTO;
 import com.macaron.homeschool.model.entity.User;
+import com.macaron.homeschool.model.vo.UserInfoVO;
 import com.macaron.homeschool.model.vo.UserVO;
 
 import java.util.List;
@@ -24,6 +25,10 @@ public interface UserService extends IService<User> {
     User register(UserRegisterDTO userRegisterDTO);
 
     User checkAndGetUserById(Long userId);
+
+    UserInfoVO getUserInfoVOById(Long userId);
+
+    UserVO getUserVOById(Long userId);
 
     List<UserVO> getUserList(List<UserType> userTypes);
 

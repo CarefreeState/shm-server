@@ -3,6 +3,7 @@ package com.macaron.homeschool.common.constants;
 import com.macaron.homeschool.common.enums.UserType;
 
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created With Intellij IDEA
@@ -18,5 +19,11 @@ public interface UserConstants {
     Set<UserType> NO_AUDIT_REQUIRED_ROLES = Set.of(UserType.GUARDIAN);
 
     String MYSELF = "我";
+
+    String USER_INFO_MAP = "userInfoMap:";
+
+    Long USER_INFO_MAP_TIMEOUT = 1L;
+
+    TimeUnit USER_INFO_MAP_UNIT = TimeUnit.DAYS;
 
 }

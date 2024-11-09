@@ -61,8 +61,7 @@ public class UserController {
     @Intercept(permit = {UserType.MANAGER, UserType.TEACHER, UserType.GUARDIAN})
     public SystemJsonResponse<UserInfoVO> getUserInfo() {
         Long userId = BaseContext.getCurrentUser().getUserId();
-        User user = userService.checkAndGetUserById(userId);
-        UserInfoVO userInfoVO = UserConverter.INSTANCE.userToUserInfoVO(user);
+        UserInfoVO userInfoVO = userService.getUserInfoVOById(userId);
         return SystemJsonResponse.SYSTEM_SUCCESS(userInfoVO);
     }
 
@@ -70,8 +69,7 @@ public class UserController {
     @Operation(summary = "读取指定用户信息")
     @Intercept(permit = {UserType.MANAGER, UserType.TEACHER, UserType.GUARDIAN})
     public SystemJsonResponse<UserInfoVO> getUserInfoByUserId(@PathVariable("userId") @NotNull(message = "用户 id 不能为空") Long userId) {
-        User user = userService.checkAndGetUserById(userId);
-        UserInfoVO userInfoVO = UserConverter.INSTANCE.userToUserInfoVO(user);
+        UserInfoVO userInfoVO = userService.getUserInfoVOById(userId);
         return SystemJsonResponse.SYSTEM_SUCCESS(userInfoVO);
     }
 

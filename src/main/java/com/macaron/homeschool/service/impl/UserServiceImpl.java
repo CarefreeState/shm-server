@@ -11,7 +11,9 @@ import com.macaron.homeschool.model.converter.UserConverter;
 import com.macaron.homeschool.model.dao.mapper.UserMapper;
 import com.macaron.homeschool.model.dto.UserRegisterDTO;
 import com.macaron.homeschool.model.entity.User;
+import com.macaron.homeschool.model.vo.UserInfoVO;
 import com.macaron.homeschool.model.vo.UserVO;
+import com.macaron.homeschool.redis.cache.RedisCache;
 import com.macaron.homeschool.redis.lock.RedisLock;
 import com.macaron.homeschool.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,8 @@ import java.util.Optional;
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService{
+
+    private final RedisCache redisCache;
 
     private final RedisLock redisLock;
 
@@ -72,8 +76,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     public User checkAndGetUserById(Long userId) {
-        return getUserById(userId).orElseThrow(() ->
-                new GlobalServiceException(GlobalServiceStatusCode.USER_ACCOUNT_NOT_EXIST));
+        String redisKey = UserConstants.USER_INFO_MAP + userId;
+        return redisCache.<User>getCacheObject(redisKey).orElseGet(() -> {
+            User user = getUserById(userId).orElseThrow(() ->
+                    new GlobalServiceException(GlobalServiceStatusCode.USER_ACCOUNT_NOT_EXIST));
+            redisCache.setCacheObject(redisKey, user, UserConstants.USER_INFO_MAP_TIMEOUT, UserConstants.USER_INFO_MAP_UNIT);
+            return user;
+        });
+    }
+
+    @Override
+    public UserInfoVO getUserInfoVOById(Long userId) {
+        return UserConverter.INSTANCE.userToUserInfoVO(checkAndGetUserById(userId));
+    }
+
+    @Override
+    public UserVO getUserVOById(Long userId) {
+        return UserConverter.INSTANCE.userToUserVO(checkAndGetUserById(userId));
     }
 
     @Override

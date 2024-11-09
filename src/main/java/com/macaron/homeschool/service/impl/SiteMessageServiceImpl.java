@@ -8,7 +8,6 @@ import com.macaron.homeschool.common.constants.UserConstants;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.model.converter.SiteMessageConverter;
-import com.macaron.homeschool.model.converter.UserConverter;
 import com.macaron.homeschool.model.dao.mapper.SiteMessageMapper;
 import com.macaron.homeschool.model.dto.SiteMessageDTO;
 import com.macaron.homeschool.model.dto.SiteMessageQueryDTO;
@@ -138,8 +137,8 @@ public class SiteMessageServiceImpl extends ServiceImpl<SiteMessageMapper, SiteM
             throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
         }
         SiteMessageVO siteMessageVO = SiteMessageConverter.INSTANCE.siteMessageToSiteMessageVO(siteMessage);
-        UserVO sender = UserConverter.INSTANCE.userToUserVO(userService.checkAndGetUserById(senderId));
-        UserVO recipient = UserConverter.INSTANCE.userToUserVO(userService.checkAndGetUserById(recipientId));
+        UserVO sender = userService.getUserVOById(senderId);
+        UserVO recipient = userService.getUserVOById(recipientId);
         siteMessageVO.setSender(sender);
         siteMessageVO.setRecipient(recipient);
         return siteMessageVO;

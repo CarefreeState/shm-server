@@ -6,12 +6,10 @@ import com.macaron.homeschool.common.base.BasePageResult;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.model.converter.ClassMessageConverter;
-import com.macaron.homeschool.model.converter.UserConverter;
 import com.macaron.homeschool.model.dao.mapper.ClassMessageMapper;
 import com.macaron.homeschool.model.dto.ClassMessageDTO;
 import com.macaron.homeschool.model.dto.ClassMessageQueryDTO;
 import com.macaron.homeschool.model.entity.ClassMessage;
-import com.macaron.homeschool.model.entity.User;
 import com.macaron.homeschool.model.vo.ClassMessageDetailVO;
 import com.macaron.homeschool.model.vo.ClassMessageQueryVO;
 import com.macaron.homeschool.service.ClassMessageService;
@@ -91,8 +89,7 @@ public class ClassMessageServiceImpl extends ServiceImpl<ClassMessageMapper, Cla
     public ClassMessageDetailVO queryClassMessageDetail(Long messageId, Long userId) {
         ClassMessage classMessage = checkAndGetClassMessage(messageId);
         ClassMessageDetailVO systemMessageDetailVO = ClassMessageConverter.INSTANCE.classMessageToClassMessageDetailVO(classMessage);
-        User user = userService.checkAndGetUserById(classMessage.getCreatorId());
-        systemMessageDetailVO.setUserInfoVO(UserConverter.INSTANCE.userToUserInfoVO(user));
+        systemMessageDetailVO.setUserInfoVO(userService.getUserInfoVOById(classMessage.getCreatorId()));
         return systemMessageDetailVO;
     }
 }
