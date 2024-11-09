@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macaron.homeschool.model.dao.mapper.SiteMessageMapper">
+
+    <resultMap id="SiteMessageDetailMap" type="com.macaron.homeschool.model.vo.SiteMessageVO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <association property="sender" columnPrefix="s_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.UserDetailMap"/>
+        <association property="recipient" columnPrefix="r_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.UserDetailMap"/>
+    </resultMap>
+
+    <select id="querySiteMessageList" resultMap="SiteMessageDetailMap">
+        select
+            m.id, m.title, m.content, m.create_time,
+            s.id s_id, s.username s_username, s.nickname s_nickname, s.phone_number s_phone_number,
+            s.user_type s_user_type, s.audit_status s_audit_status,
+            r.id r_id, r.username r_username, r.nickname r_nickname, r.phone_number r_phone_number,
+            r.user_type r_user_type, r.audit_status r_audit_status
+        from site_message m
+             left join user s on s.id = m.sender_id and s.is_deleted = 0 and m.is_deleted = 0
+             left join user r on r.id = m.recipient_id and r.is_deleted = 0 and m.is_deleted = 0
+        <where>
+            m.is_deleted = 0
+            <if test="classId != null">
+                and m.class_id = #{classId,jdbcType=BIGINT}
+            </if>
+            and
+            (
+                (
+                    s.id = #{userId,jdbcType=BIGINT}
+                    <if test="oppositeId != null">
+                        and r.id = #{oppositeId,jdbcType=BIGINT}
+                    </if>
+                )
+                or
+                (
+                    <if test="oppositeId != null">
+                        s.id = #{oppositeId,jdbcType=BIGINT} and
+                    </if>
+                    r.id = #{userId,jdbcType=BIGINT}
+                )
+            )
+            <if test="isFromMe != null">
+                <if test="isFromMe == true">
+                    and s.id = #{userId,jdbcType=BIGINT}
+                </if>
+                <if test="isFromMe == false">
+                    and r.id = #{userId,jdbcType=BIGINT}
+                </if>
+            </if>
+        </where>
+        order by m.create_time asc
+    </select>
+
+    <select id="querySiteMessageListByUserId" resultMap="SiteMessageDetailMap">
+        select
+            m.id, m.title, m.content, m.create_time,
+            s.id s_id, s.username s_username, s.nickname s_nickname, s.phone_number s_phone_number,
+            s.user_type s_user_type, s.audit_status s_audit_status,
+            r.id r_id, r.username r_username, r.nickname r_nickname, r.phone_number r_phone_number,
+            r.user_type r_user_type, r.audit_status r_audit_status
+        from site_message m
+            left join user s on s.id = m.sender_id and s.is_deleted = 0 and m.is_deleted = 0
+            left join user r on r.id = m.recipient_id and r.is_deleted = 0 and m.is_deleted = 0
+        <where>
+            m.is_deleted = 0
+            <if test="classId != null">
+                and m.class_id = #{classId,jdbcType=BIGINT}
+            </if>
+            and (s.id = #{userId,jdbcType=BIGINT} or r.id = #{userId,jdbcType=BIGINT})
+        </where>
+        order by m.create_time asc
+    </select>
+
+</mapper>

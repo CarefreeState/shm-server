@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macaron.homeschool.model.dao.mapper.SchoolClassMapper">
+
+    <resultMap id="SchoolClassUserMap" type="com.macaron.homeschool.model.vo.SchoolClassUserVO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="auditStatus" column="audit_status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <association property="userVO" columnPrefix="u_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.UserDetailMap"/>
+    </resultMap>
+    <resultMap id="SchoolClassDetailMap" type="com.macaron.homeschool.model.vo.SchoolClassDetailVO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="auditStatus" column="audit_status" jdbcType="INTEGER"/>
+        <association property="creator" columnPrefix="cr_" resultMap="com.macaron.homeschool.model.dao.mapper.UserMapper.UserDetailMap"/>
+        <collection property="userList" columnPrefix="cu_" resultMap="SchoolClassUserMap"/>
+    </resultMap>
+    <resultMap id="SchoolClassAboutMeMap" type="com.macaron.homeschool.model.vo.SchoolClassAboutMeVO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="isMine" column="is_mine" jdbcType="BIT"/>
+        <result property="classAuditStatus" column="class_audit_status" jdbcType="INTEGER"/>
+        <result property="attendAuditStatus" column="attend_audit_status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="querySchoolClassUserList" parameterType="java.lang.Long" resultMap="SchoolClassDetailMap">
+        select
+            c.id, c.class_name, c.audit_status,
+            cr.id cr_id, cr.username cr_username, cr.nickname cr_nickname, cr.phone_number cr_phone_number,
+            cr.user_type cr_user_type, cr.audit_status cr_audit_status,
+            cu.id cu_id, cu.audit_status cu_audit_status, cu.create_time cu_create_time,
+            u.id cu_u_id, u.username cu_u_username, u.nickname cu_u_nickname, u.phone_number cu_u_phone_number,
+            u.user_type cu_u_user_type, u.audit_status cu_u_audit_status
+        from school_class c
+             left join user cr on c.creator_id = cr.id and cr.is_deleted = 0 and c.is_deleted = 0
+             left join class_user_link cu on c.id = cu.class_id and c.is_deleted = 0 and cu.is_deleted = 0
+             left join user u on cu.user_id = u.id and cu.is_deleted = 0 and u.is_deleted = 0
+        where
+            c.is_deleted = 0 and c.id = #{classId,jdbcType=BIGINT}
+        order by cu_u_user_type asc, cu_create_time asc
+    </select>
+
+    <select id="querySchoolClassAboutMeList" parameterType="java.lang.Long" resultMap="SchoolClassAboutMeMap">
+        select
+            c.id, c.class_name, true is_mine,
+            c.audit_status class_audit_status, null attend_audit_status, c.create_time
+        from
+            user u
+            left join school_class c on u.id = c.creator_id and u.is_deleted = 0 and c.is_deleted = 0
+        where
+            u.is_deleted = 0 and u.id = #{userId,jdbcType=BIGINT} and c.id is not null
+        union
+        select
+            c.id, c.class_name, c.creator_id = u.id is_mine,
+            c.audit_status class_audit_status, cu.audit_status attend_audit_status, c.create_time
+        from
+            user u
+            left join class_user_link cu on cu.user_id = u.id and cu.is_deleted = 0 and u.is_deleted = 0
+            left join school_class c on c.id = cu.class_id and cu.is_deleted = 0 and c.is_deleted = 0
+        where
+            u.is_deleted = 0 and u.id = #{userId,jdbcType=BIGINT} and c.id is not null
+        order by class_audit_status asc, create_time asc
+    </select>
+
+</mapper>
