@@ -40,8 +40,8 @@ public class SystemJsonResponse<T> implements Serializable {
      *
      * @return 成功状态码
      */
-    public static SystemJsonResponse SYSTEM_SUCCESS() {
-        return new SystemJsonResponse(GlobalServiceStatusCode.SYSTEM_SUCCESS.getCode(),
+    public static SystemJsonResponse<?> SYSTEM_SUCCESS() {
+        return new SystemJsonResponse<>(GlobalServiceStatusCode.SYSTEM_SUCCESS.getCode(),
                 GlobalServiceStatusCode.SYSTEM_SUCCESS.getMessage());
     }
 
@@ -63,8 +63,8 @@ public class SystemJsonResponse<T> implements Serializable {
      *
      * @return SystemJsonResponse
      */
-    public static SystemJsonResponse SYSTEM_FAIL() {
-        return new SystemJsonResponse(GlobalServiceStatusCode.SYSTEM_SERVICE_FAIL.getCode(),
+    public static SystemJsonResponse<?> SYSTEM_FAIL() {
+        return new SystemJsonResponse<>(GlobalServiceStatusCode.SYSTEM_SERVICE_FAIL.getCode(),
                 GlobalServiceStatusCode.SYSTEM_SERVICE_FAIL.getMessage());
     }
 
@@ -74,8 +74,8 @@ public class SystemJsonResponse<T> implements Serializable {
      *
      * @return SystemJsonResponse
      */
-    public static SystemJsonResponse SERVICE_ERROR() {
-        return new SystemJsonResponse(GlobalServiceStatusCode.SYSTEM_SERVICE_ERROR.getCode(),
+    public static SystemJsonResponse<?> SERVICE_ERROR() {
+        return new SystemJsonResponse<>(GlobalServiceStatusCode.SYSTEM_SERVICE_ERROR.getCode(),
                 GlobalServiceStatusCode.SYSTEM_SERVICE_ERROR.getMessage());
     }
 
@@ -86,8 +86,8 @@ public class SystemJsonResponse<T> implements Serializable {
      * @param code 自定义状态码 {@link GlobalServiceStatusCode}
      * @return code对应的错误信息
      */
-    public static SystemJsonResponse CUSTOMIZE_ERROR(GlobalServiceStatusCode code) {
-        return new SystemJsonResponse(code.getCode(), code.getMessage());
+    public static SystemJsonResponse<?> CUSTOMIZE_ERROR(GlobalServiceStatusCode code) {
+        return new SystemJsonResponse<>(code.getCode(), code.getMessage());
     }
 
     /**
@@ -98,8 +98,8 @@ public class SystemJsonResponse<T> implements Serializable {
      * @param msg 自定义异常信息
      * @return code对应的错误信息
      */
-    public static SystemJsonResponse CUSTOMIZE_MSG_ERROR(GlobalServiceStatusCode code, String msg) {
-        return new SystemJsonResponse(code.getCode(), Optional.ofNullable(msg).orElseGet(code::getMessage));
+    public static SystemJsonResponse<?> CUSTOMIZE_MSG_ERROR(GlobalServiceStatusCode code, String msg) {
+        return new SystemJsonResponse<>(code.getCode(), Optional.ofNullable(msg).orElseGet(code::getMessage));
     }
 
 }
