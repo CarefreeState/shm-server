@@ -1,6 +1,5 @@
 package com.macaron.homeschool.model.converter;
 
-import com.macaron.homeschool.model.dto.AuditClassDTO;
 import com.macaron.homeschool.model.dto.AuditUserDTO;
 import com.macaron.homeschool.model.dto.UserRegisterDTO;
 import com.macaron.homeschool.model.entity.User;

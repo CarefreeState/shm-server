@@ -4,7 +4,6 @@ import cn.hutool.extra.spring.SpringUtil;
 import com.macaron.homeschool.common.SystemJsonResponse;
 import com.macaron.homeschool.common.annotation.Intercept;
 import com.macaron.homeschool.common.context.BaseContext;
-import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.enums.UserType;
 import com.macaron.homeschool.common.exception.GlobalServiceException;

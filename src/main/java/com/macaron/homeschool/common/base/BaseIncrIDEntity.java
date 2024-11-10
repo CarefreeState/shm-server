@@ -1,10 +1,8 @@
 package com.macaron.homeschool.common.base;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.macaron.homeschool.common.constants.DateTimeConstants;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

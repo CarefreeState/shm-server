@@ -1,11 +1,8 @@
 package com.macaron.homeschool.model.converter;
 
 import com.macaron.homeschool.model.dto.AuditClassDTO;
-import com.macaron.homeschool.model.dto.AuditClassUserDTO;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
-import com.macaron.homeschool.model.entity.ClassUserLink;
 import com.macaron.homeschool.model.entity.SchoolClass;
-import com.macaron.homeschool.model.entity.User;
 import com.macaron.homeschool.model.vo.SchoolClassVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

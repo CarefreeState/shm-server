@@ -6,7 +6,6 @@ import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.model.converter.SchoolClassConverter;
-import com.macaron.homeschool.model.converter.SchoolClassConverterImpl;
 import com.macaron.homeschool.model.dao.mapper.SchoolClassMapper;
 import com.macaron.homeschool.model.dto.AuditClassDTO;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
