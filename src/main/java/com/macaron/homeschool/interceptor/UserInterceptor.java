@@ -80,31 +80,4 @@ public class UserInterceptor implements HandlerInterceptor {
         }
     }
 
-    private static int num = 0;
-
-    public static void main(String[] args) throws InterruptedException {
-        String lock = "lock:";
-        Thread t1 = new Thread(() -> {
-            for (int i = 0; i < 1_000_000; i++) {
-                String sync = lock + 1;
-                synchronized (sync.intern()) {
-                    num++;
-                }
-            }
-        });
-        Thread t2 = new Thread(() -> {
-            for (int i = 0; i < 1_000_000; i++) {
-                String sync = lock + 1;
-                synchronized (sync.intern()) {
-                    num++;
-                }
-            }
-        });
-        t1.start();
-        t2.start();
-        t1.join();
-        t2.join();
-        System.out.println(num);
-    }
-
 }
