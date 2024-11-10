@@ -22,6 +22,11 @@ public enum AuditStatus {
     AUDIT_FAILED(2, "审核不通过"),
     ;
 
+    /**
+     * 建议枚举统一 输入输出 依旧是 code 的类型，并交给数据映射层去映射，这样情况会更加可控
+     * （不同框架的映射逻辑还不一样，比如 MP 若 code = null 会映射一个默认值）
+     * 也还原真实的请求和响应数据结构，更加容易观察
+     */
     @JsonValue
     @EnumValue
     private final Integer code;

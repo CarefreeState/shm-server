@@ -2,6 +2,7 @@ package com.macaron.homeschool.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.macaron.homeschool.common.enums.AuditStatus;
+import com.macaron.homeschool.model.dto.AuditClassDTO;
 import com.macaron.homeschool.model.dto.SchoolClassDTO;
 import com.macaron.homeschool.model.entity.SchoolClass;
 import com.macaron.homeschool.model.vo.SchoolClassAboutMeVO;
@@ -26,7 +27,7 @@ public interface SchoolClassService extends IService<SchoolClass> {
 
     void updateSchoolClass(Long classId, Long teacherId, SchoolClassDTO schoolClassDTO);
 
-    void auditSchoolClass(Long classId, AuditStatus auditStatus);
+    void auditSchoolClass(AuditClassDTO auditClassDTO);
 
     List<SchoolClassVO> querySchoolClassList(List<AuditStatus> auditStatuseList);
 

@@ -9,6 +9,7 @@ import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.common.util.PasswordUtil;
 import com.macaron.homeschool.model.converter.UserConverter;
 import com.macaron.homeschool.model.dao.mapper.UserMapper;
+import com.macaron.homeschool.model.dto.AuditUserDTO;
 import com.macaron.homeschool.model.dto.UserRegisterDTO;
 import com.macaron.homeschool.model.entity.User;
 import com.macaron.homeschool.model.vo.UserInfoVO;
@@ -108,11 +109,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public void auditUser(Long userId, AuditStatus auditStatus) {
-        User updateUser = new User();
-        updateUser.setId(userId);
-        updateUser.setAuditStatus(auditStatus);
-        this.updateById(updateUser);
+    public void auditUser(AuditUserDTO auditUserDTO) {
+        this.updateById(UserConverter.INSTANCE.auditUserDTOToUser(auditUserDTO));
     }
 }
 

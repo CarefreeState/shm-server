@@ -98,8 +98,7 @@ public class UserController {
         if(BaseContext.getCurrentUser().getUserId().equals(userId)) {
             throw new GlobalServiceException(GlobalServiceStatusCode.USER_NO_PERMISSION);
         }
-        AuditStatus auditStatus = AuditStatus.get(auditUserDTO.getAuditStatus());
-        userService.auditUser(userId, auditStatus);
+        userService.auditUser(auditUserDTO);
         return SystemJsonResponse.SYSTEM_SUCCESS();
     }
 }

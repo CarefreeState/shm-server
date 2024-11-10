@@ -1,5 +1,7 @@
 package com.macaron.homeschool.model.converter;
 
+import com.macaron.homeschool.model.dto.AuditClassDTO;
+import com.macaron.homeschool.model.dto.AuditUserDTO;
 import com.macaron.homeschool.model.dto.UserRegisterDTO;
 import com.macaron.homeschool.model.entity.User;
 import com.macaron.homeschool.model.vo.UserInfoVO;
@@ -22,14 +24,18 @@ public interface UserConverter {
 
     UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
 
+    @Mapping(target = "id", source = "userId")
+    @Mapping(target = "auditStatus", expression = "java(com.macaron.homeschool.common.enums.AuditStatus.get(auditUserDTO.getAuditStatus()))")
+    User auditUserDTOToUser(AuditUserDTO auditUserDTO);
+
     @Mapping(target = "userType", expression = "java(com.macaron.homeschool.common.enums.UserType.get(userRegisterDTO.getUserType()))")
     User userRegisterDTOToUser(UserRegisterDTO userRegisterDTO);
 
-    @Mapping(target = "userType", expression = "java(user.getUserType().getCode())")
+    @Mapping(target = "userType", expression = "java(java.util.Optional.ofNullable(user.getUserType()).map(com.macaron.homeschool.common.enums.UserType::getCode).orElse(null))")
     UserInfoVO userToUserInfoVO(User user);
 
-    @Mapping(target = "userType", expression = "java(user.getUserType().getCode())")
-    @Mapping(target = "auditStatus", expression = "java(user.getAuditStatus().getCode())")
+    @Mapping(target = "userType", expression = "java(java.util.Optional.ofNullable(user.getUserType()).map(com.macaron.homeschool.common.enums.UserType::getCode).orElse(null))")
+    @Mapping(target = "auditStatus", expression = "java(java.util.Optional.ofNullable(user.getAuditStatus()).map(com.macaron.homeschool.common.enums.AuditStatus::getCode).orElse(null))")
     UserVO userToUserVO(User user);
 
     List<UserVO> userListToUserVOList(List<User> userList);

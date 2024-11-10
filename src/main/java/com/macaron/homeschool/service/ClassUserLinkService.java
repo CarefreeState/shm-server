@@ -2,6 +2,7 @@ package com.macaron.homeschool.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.macaron.homeschool.common.enums.AuditStatus;
+import com.macaron.homeschool.model.dto.AuditClassUserDTO;
 import com.macaron.homeschool.model.entity.ClassUserLink;
 
 import java.util.Optional;

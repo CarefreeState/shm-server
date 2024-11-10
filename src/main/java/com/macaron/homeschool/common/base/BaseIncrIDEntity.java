@@ -29,14 +29,12 @@ public class BaseIncrIDEntity implements Serializable {
      * 创建时间
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
-    @DateTimeFormat(pattern = DateTimeConstants.DATE_TIME_PATTERN)
     protected LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @TableField(value = "update_time", fill = FieldFill.UPDATE)
-    @DateTimeFormat(pattern = DateTimeConstants.DATE_TIME_PATTERN)
     private LocalDateTime updateTime;
 
     /**

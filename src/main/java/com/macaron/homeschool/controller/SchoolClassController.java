@@ -76,7 +76,7 @@ public class SchoolClassController {
     @Operation(summary = "管理员审核班级")
     @Intercept(permit = {UserType.MANAGER})
     public SystemJsonResponse<?> auditSchoolClass(@Valid @RequestBody AuditClassDTO auditClassDTO) {
-        schoolClassService.auditSchoolClass(auditClassDTO.getClassId(), AuditStatus.get(auditClassDTO.getAuditStatus()));
+        schoolClassService.auditSchoolClass(auditClassDTO);
         return SystemJsonResponse.SYSTEM_SUCCESS();
     }
 
