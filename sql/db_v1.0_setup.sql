@@ -1,7 +1,7 @@
 
-drop database if exists home_school_management;
-create database home_school_management character set utf8mb4 collate utf8mb4_bin;
-use home_school_management;
+drop database if exists `home_school_management`;
+create database `home_school_management` character set utf8mb4 collate utf8mb4_bin;
+use `home_school_management`;
 
 drop table if exists `user`;
 create table `user`(
