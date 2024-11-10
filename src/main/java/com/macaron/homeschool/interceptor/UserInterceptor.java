@@ -51,6 +51,7 @@ public class UserInterceptor implements HandlerInterceptor {
                 throw new GlobalServiceException(GlobalServiceStatusCode.USER_NOT_LOGIN);
             });
         } catch (Exception e) {
+            log.warn("登录失效：{}", e.getMessage());
             throw new GlobalServiceException("登录失效", GlobalServiceStatusCode.USER_NOT_LOGIN);
         }
         log.info("登录信息 -> {}", userHelper);
@@ -77,6 +78,33 @@ public class UserInterceptor implements HandlerInterceptor {
             log.info("删除本地线程变量");
             BaseContext.removeCurrentUser();
         }
+    }
+
+    private static int num = 0;
+
+    public static void main(String[] args) throws InterruptedException {
+        String lock = "lock:";
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i < 1_000_000; i++) {
+                String sync = lock + 1;
+                synchronized (sync.intern()) {
+                    num++;
+                }
+            }
+        });
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i < 1_000_000; i++) {
+                String sync = lock + 1;
+                synchronized (sync.intern()) {
+                    num++;
+                }
+            }
+        });
+        t1.start();
+        t2.start();
+        t1.join();
+        t2.join();
+        System.out.println(num);
     }
 
 }

@@ -112,9 +112,8 @@ public class JwtUtil {
     public static String parseJwtRawData(String jwt, HttpServletResponse response) {
         Claims claims = parseJwt(jwt);
         String subject = claims.getSubject();
-        if(Objects.nonNull(response) && Boolean.TRUE.equals(judgeApproachExpiration(claims))) {
-            String newJwt = createJwt(subject);
-            response.setHeader(JWT_HEADER, newJwt);
+        if(Objects.nonNull(response) && judgeApproachExpiration(claims)) {
+            response.setHeader(JWT_HEADER, createJwt(subject));
         }
         return subject;
     }
