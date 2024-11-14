@@ -30,10 +30,6 @@ public class JsonUtil {
 
     public final static ObjectMapper OBJECT_MAPPER;
 
-    private final static String TYPE_KEY = "@type@";
-
-    private final static String DEFAULT_TYPE = Object.class.getName();
-
     static {
         OBJECT_MAPPER = new Jackson2ObjectMapperBuilder()
                 .indentOutput(Boolean.TRUE)
@@ -49,16 +45,6 @@ public class JsonUtil {
         ;
     }
 
-    public static <T> T analyzeJsonField(String json, String path, Class<T> clazz) {
-        return JSONUtil.parse(json).getByPath(path, clazz);
-    }
-
-    public static <T> String addJsonField(String json, String key, T value) {
-        JSON jsonObject = JSONUtil.parse(json);
-        jsonObject.putByPath(key, value);
-        return jsonObject.toString();
-    }
-
     public static <T> T parse(String json, Class<T> clazz) {
         try {
             return OBJECT_MAPPER.readValue(json, clazz);
@@ -67,19 +53,9 @@ public class JsonUtil {
         }
     }
 
-    public static Object parse(String json) {
-        try {
-            String className = analyzeJsonField(json, TYPE_KEY, String.class);
-            className = Optional.ofNullable(className).filter(StringUtils::hasText).orElse(DEFAULT_TYPE);
-            return OBJECT_MAPPER.readValue(json, Class.forName(className));
-        } catch (Exception e) {
-            throw new GlobalServiceException(e.getMessage());
-        }
-    }
-
     public static String toJson(Object obj) {
         try {
-            return addJsonField(OBJECT_MAPPER.writeValueAsString(obj), TYPE_KEY, obj.getClass().getName());
+            return OBJECT_MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             throw new GlobalServiceException(e.getMessage());
         }

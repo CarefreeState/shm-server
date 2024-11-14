@@ -6,6 +6,8 @@ import com.macaron.homeschool.common.enums.AuditStatus;
 import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.enums.UserType;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
+import com.macaron.homeschool.common.redis.cache.RedisCache;
+import com.macaron.homeschool.common.redis.lock.RedisLock;
 import com.macaron.homeschool.common.util.PasswordUtil;
 import com.macaron.homeschool.model.converter.UserConverter;
 import com.macaron.homeschool.model.dao.mapper.UserMapper;
@@ -14,8 +16,6 @@ import com.macaron.homeschool.model.dto.UserRegisterDTO;
 import com.macaron.homeschool.model.entity.User;
 import com.macaron.homeschool.model.vo.UserInfoVO;
 import com.macaron.homeschool.model.vo.UserVO;
-import com.macaron.homeschool.redis.cache.RedisCache;
-import com.macaron.homeschool.redis.lock.RedisLock;
 import com.macaron.homeschool.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,10 +78,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public User checkAndGetUserById(Long userId) {
         String redisKey = UserConstants.USER_INFO_MAP + userId;
-        return redisCache.<User>getCacheObject(redisKey).orElseGet(() -> {
+        return redisCache.getObject(redisKey, User.class).orElseGet(() -> {
             User user = getUserById(userId).orElseThrow(() ->
                     new GlobalServiceException(GlobalServiceStatusCode.USER_ACCOUNT_NOT_EXIST));
-            redisCache.setCacheObject(redisKey, user, UserConstants.USER_INFO_MAP_TIMEOUT, UserConstants.USER_INFO_MAP_UNIT);
+            redisCache.setObject(redisKey, user, UserConstants.USER_INFO_MAP_TIMEOUT, UserConstants.USER_INFO_MAP_UNIT);
             return user;
         });
     }

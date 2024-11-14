@@ -4,7 +4,7 @@ import com.macaron.homeschool.common.enums.GlobalServiceStatusCode;
 import com.macaron.homeschool.common.exception.GlobalServiceException;
 import com.macaron.homeschool.common.jwt.JwtUtil;
 import com.macaron.homeschool.common.util.PasswordUtil;
-import com.macaron.homeschool.interceptor.UserHelper;
+import com.macaron.homeschool.common.context.UserHelper;
 import com.macaron.homeschool.model.dto.UserLoginDTO;
 import com.macaron.homeschool.model.dto.UserPasswordLoginDTO;
 import com.macaron.homeschool.model.entity.User;
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Created With Intellij IDEA
@@ -33,10 +33,8 @@ public class PasswordLoginService implements LoginService {
 
     @Override
     public UserLoginVO login(UserLoginDTO userLoginDTO) {
-        UserPasswordLoginDTO passwordParams = userLoginDTO.getPasswordParams();
-        if(Objects.isNull(passwordParams)) {
-            throw new GlobalServiceException(GlobalServiceStatusCode.PARAM_IS_BLANK);
-        }
+        UserPasswordLoginDTO passwordParams = Optional.ofNullable(userLoginDTO.getPasswordParams()).orElseThrow(() ->
+                new GlobalServiceException(GlobalServiceStatusCode.PARAM_IS_BLANK));
         // 获取数据库的用户数据
         User dbUser = userService.getUserByUsername(passwordParams.getUsername()).orElseThrow(() ->
                 new GlobalServiceException(GlobalServiceStatusCode.USER_USERNAME_PASSWORD_ERROR));

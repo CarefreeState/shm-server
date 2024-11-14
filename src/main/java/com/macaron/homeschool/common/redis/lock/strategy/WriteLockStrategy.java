@@ -1,4 +1,4 @@
-package com.macaron.homeschool.redis.lock.strategy;
+package com.macaron.homeschool.common.redis.lock.strategy;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

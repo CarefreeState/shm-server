@@ -1,7 +1,5 @@
 package com.macaron.homeschool.common.context;
 
-import com.macaron.homeschool.interceptor.UserHelper;
-
 /**
  * @author cattleYuan
  * @date 2024/1/18

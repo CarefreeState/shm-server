@@ -1,5 +1,6 @@
-package com.macaron.homeschool.redis.config;
+package com.macaron.homeschool.common.redis.config;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -20,6 +21,7 @@ import java.util.Optional;
  */
 @Configuration
 @Setter
+@Getter
 @ConfigurationProperties(prefix = "spring.redisson")
 public class RedissonConfig {
 

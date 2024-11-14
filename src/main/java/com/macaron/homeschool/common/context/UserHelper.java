@@ -1,4 +1,4 @@
-package com.macaron.homeschool.interceptor;
+package com.macaron.homeschool.common.context;
 
 import com.macaron.homeschool.common.enums.UserType;
 import lombok.*;

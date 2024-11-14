@@ -1,4 +1,4 @@
-package com.macaron.homeschool.redis.lock.strategy;
+package com.macaron.homeschool.common.redis.lock.strategy;
 
 import org.redisson.api.RLock;
 

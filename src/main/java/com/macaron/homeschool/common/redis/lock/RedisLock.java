@@ -1,7 +1,7 @@
-package com.macaron.homeschool.redis.lock;
+package com.macaron.homeschool.common.redis.lock;
 
-import com.macaron.homeschool.redis.lock.strategy.LockStrategy;
-import com.macaron.homeschool.redis.lock.strategy.SimpleLockStrategy;
+import com.macaron.homeschool.common.redis.lock.strategy.LockStrategy;
+import com.macaron.homeschool.common.redis.lock.strategy.SimpleLockStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;

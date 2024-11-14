@@ -1,4 +1,4 @@
-package com.macaron.homeschool.redis.lock;
+package com.macaron.homeschool.common.redis.lock;
 
 import lombok.Getter;
 import lombok.Setter;

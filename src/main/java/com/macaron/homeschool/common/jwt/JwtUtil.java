@@ -22,6 +22,8 @@ public class JwtUtil {
     // 设置秘钥明文
     private static final JwtProperties JWT_PROPERTIES = SpringUtil.getBean(JwtProperties.class);
 
+    private static final JwtRawDataSerializer JWT_RAW_DATA_SERIALIZER = SpringUtil.getBean(JwtRawDataSerializer.class);
+
     public static final String JWT_HEADER = JWT_PROPERTIES.getTokenName();
 
     public static final String JWT_KEY = JWT_PROPERTIES.getSecretKey();
@@ -147,18 +149,18 @@ public class JwtUtil {
     }
 
     public static <T> String createJwt(T subject) {
-        return createJwt(JsonUtil.toJson(subject));
+        return createJwt(JWT_RAW_DATA_SERIALIZER.toJson(subject));
     }
 
     public static <T> T parseJwt(String jwt, Class<T> clazz) {
-        return JsonUtil.parse(parseJwtRawData(jwt), clazz);
+        return JWT_RAW_DATA_SERIALIZER.parse(parseJwtRawData(jwt), clazz);
     }
 
     public static <T> T parseJwt(HttpServletRequest request, HttpServletResponse response, Class<T> clazz) {
         return Optional.ofNullable(request.getHeader(JWT_HEADER))
                 .filter(StringUtils::hasText)
                 .map(token -> parseJwtRawData(token, response))
-                .map(raw -> JsonUtil.parse(raw, clazz))
+                .map(raw -> JWT_RAW_DATA_SERIALIZER.parse(raw, clazz))
                 .orElse(null);
     }
 
