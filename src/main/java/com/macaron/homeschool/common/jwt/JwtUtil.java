@@ -1,7 +1,6 @@
 package com.macaron.homeschool.common.jwt;
 
 import cn.hutool.extra.spring.SpringUtil;
-import com.macaron.homeschool.common.util.JsonUtil;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
