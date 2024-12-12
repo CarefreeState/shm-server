@@ -19,10 +19,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-/**
- * @author cattleYuan
- * @date 2024/1/18
- */
 
 @Component
 @Slf4j
@@ -34,7 +30,6 @@ public class UserInterceptor implements HandlerInterceptor {
         //可以解决拦截器跨域问题
         if (!(handler instanceof HandlerMethod)) {
             // 并不处理非目标方法的请求
-            // todo: 例如通过本服务，但不是通过目标方法获取资源的请求，而这些请求需要进行其他的处理！
             return Boolean.TRUE;
         }
         // 获取目标方法
