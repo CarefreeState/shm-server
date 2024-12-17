@@ -24,7 +24,6 @@ public class UserTypeInValidator implements ConstraintValidator<UserTypeIn, Inte
         this.userTypes = Set.of(userTypeIn.role());
     }
 
-
     @Override
     public boolean isValid(Integer role, ConstraintValidatorContext constraintValidatorContext) {
         return Optional.ofNullable(role)
